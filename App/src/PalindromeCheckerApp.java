@@ -7,35 +7,43 @@ import java.util.ArrayDeque;
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
 
-        String input = "racecar";
+        String input = "noon";
 
-        // Create service object
-        PalindromeService service = new PalindromeService();
+        // Inject strategy at runtime
+        PalindromeStrategy strategy = new StackStrategy();
 
-        boolean result = service.checkPalindrome(input);
+        boolean result = strategy.check(input);
 
         System.out.println("Input: " + input);
+        System.out.println("Using Strategy: StackStrategy");
         System.out.println("Is Palindrome?:");
         System.out.println(result);
     }
 }
 
-class PalindromeService {
-    public boolean checkPalindrome(String input) {
+interface PalindromeStrategy {
 
-        // Initialize pointers
-        int start = 0;
-        int end = input.length() - 1;
+    boolean check(String input);
+}
 
-        // Compare characters moving inward
-        while (start < end) {
+class StackStrategy implements PalindromeStrategy {
 
-            if (input.charAt(start) != input.charAt(end)) {
+    @Override
+    public boolean check(String input) {
+
+        // Create a stack to store characters
+        java.util.Stack<Character> stack = new java.util.Stack<>();
+
+        // Push each character of the input string into the stack
+        for (char c : input.toCharArray()) {
+            stack.push(c);
+        }
+
+        // Compare characters by popping from the stack
+        for (char c : input.toCharArray()) {
+            if (c != stack.pop()) {
                 return false;
             }
-
-            start++;
-            end--;
         }
 
         return true;

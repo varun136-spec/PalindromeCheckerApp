@@ -7,29 +7,37 @@ import java.util.ArrayDeque;
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
 
-        String input = "A man a plan a canal Panama";
+        String input = "racecar";
 
-        // Normalize: remove non-alphanumeric characters and convert to lowercase
-        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        // Create service object
+        PalindromeService service = new PalindromeService();
 
-        boolean isPalindrome = true;
+        boolean result = service.checkPalindrome(input);
 
-        // Compare characters from both ends
-        for (int i = 0; i < normalized.length() / 2; i++) {
+        System.out.println("Input: " + input);
+        System.out.println("Is Palindrome?:");
+        System.out.println(result);
+    }
+}
 
-            // Compare symmetric characters
-            if (normalized.charAt(i) !=
-                    normalized.charAt(normalized.length() - 1 - i)) {
+class PalindromeService {
+    public boolean checkPalindrome(String input) {
 
-                isPalindrome = false;
-                break;
+        // Initialize pointers
+        int start = 0;
+        int end = input.length() - 1;
+
+        // Compare characters moving inward
+        while (start < end) {
+
+            if (input.charAt(start) != input.charAt(end)) {
+                return false;
             }
+
+            start++;
+            end--;
         }
 
-        // Display result
-        System.out.println("Original Input: " + input);
-        System.out.println("Normalized Input: " + normalized);
-        System.out.println("Is Palindrome?:");
-        System.out.println(isPalindrome);
+        return true;
     }
 }

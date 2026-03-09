@@ -7,43 +7,49 @@ import java.util.ArrayDeque;
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
 
-        String input = "noon";
+        String input = "A man a plan a canal Panama"
+                .replaceAll("[^a-zA-Z0-9]", "")
+                .toLowerCase();
 
-        // Inject strategy at runtime
-        PalindromeStrategy strategy = new StackStrategy();
+        // Inject strategy (Two Pointer Strategy here)
+        PalindromeStrategy strategy = new TwoPointerStrategy();
+
+        // Capture start time
+        long startTime = System.nanoTime();
 
         boolean result = strategy.check(input);
 
+        // Capture end time
+        long endTime = System.nanoTime();
+
+        long duration = endTime - startTime;
+
+        // Display results
         System.out.println("Input: " + input);
-        System.out.println("Using Strategy: StackStrategy");
-        System.out.println("Is Palindrome?:");
-        System.out.println(result);
+        System.out.println("Using Strategy: TwoPointerStrategy");
+        System.out.println("Is Palindrome?: " + result);
+        System.out.println("Execution Time (nanoseconds): " + duration);
     }
 }
 
 interface PalindromeStrategy {
-
     boolean check(String input);
 }
 
-class StackStrategy implements PalindromeStrategy {
+class TwoPointerStrategy implements PalindromeStrategy {
 
     @Override
     public boolean check(String input) {
 
-        // Create a stack to store characters
-        java.util.Stack<Character> stack = new java.util.Stack<>();
+        int start = 0;
+        int end = input.length() - 1;
 
-        // Push each character of the input string into the stack
-        for (char c : input.toCharArray()) {
-            stack.push(c);
-        }
-
-        // Compare characters by popping from the stack
-        for (char c : input.toCharArray()) {
-            if (c != stack.pop()) {
+        while (start < end) {
+            if (input.charAt(start) != input.charAt(end)) {
                 return false;
             }
+            start++;
+            end--;
         }
 
         return true;
